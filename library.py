@@ -87,8 +87,8 @@ class Library:
             if user.user_id == user_id:
                 self.users.remove(user)
                 print(f"User '{user.name}' has been removed from the library.")
-                return
-        print(f"User with ID {user_id} not found.")
+            else:
+                print(f"User with ID {user_id} not found.")
 
     def borrow_book(self, user_id: str, isbn: str):
         user = next((u for u in self.users if u.user_id == user_id), None)
@@ -129,19 +129,19 @@ if __name__ == "__main__":
     library = Library()
 
     # Add books
-    book1 = Book(title="1984", author="George Orwell", isbn="1111111111")
-    book2 = Book(title="To Kill a Mockingbird", author="Harper Lee", isbn="2222222222")
+    book1 = Book(title="The Outsiders", author="S.E. Hinton", isbn="014240733X")
+    book2 = Book(title="Pride & Prejudice", author="Jane Austen", isbn="9780141439518")
     library.add_book(book1)
     library.add_book(book2)
 
-    # Add users
-    user1 = User(name="Alice", user_id="U12345")
-    user2 = User(name="Bob", user_id="U67890")
+    # Add and list users
+    user1 = User(name="Maya Walker", user_id="U12345")
+    user2 = User(name="Jackson Mayweather", user_id="U67890")
     library.add_user(user1)
     library.add_user(user2)
 
     # Borrow and return books
-    library.borrow_book(user_id="U12345", isbn="1111111111")
+    library.borrow_book(user_id="U12345", isbn="9780141439518")
     library.list_available_books()
-    library.return_book(user_id="U12345", isbn="1111111111")
+    library.return_book(user_id="U12345", isbn="9780141439518")
     library.list_available_books()
