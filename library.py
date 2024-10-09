@@ -1,3 +1,5 @@
+import unittest
+
 # Book Class
 class Book:
     def __init__(self, title: str, author: str, isbn: str, available: bool = True):
@@ -123,7 +125,7 @@ class Library:
         else:
             print("No books are currently available.")
 
-# Example usage:
+'''
 if __name__ == "__main__":
     # Create library
     library = Library()
@@ -145,3 +147,84 @@ if __name__ == "__main__":
     library.list_available_books()
     library.return_book(user_id="U12345", isbn="9780141439518")
     library.list_available_books()
+'''
+
+#Unit tests
+
+class TestBook(unittest.TestCase):
+    
+    def test_create_book(self):
+        book = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        self.assertEqual(book.title, "Fahrenheit 451")
+        self.assertEqual(book.author, "Ray Bradbury")
+        self.assertEqual(book.isbn, "9781451673319")
+        self.assertTrue(book.available)
+    
+    def test_borrow_book(self):
+        book = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        book.borrow_book()
+        self.assertFalse(book.available)
+    
+    def test_return_book(self):
+        book = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        book.borrow_book()  # Borrow the book
+        book.return_book()  # Return the book
+        self.assertTrue(book.available)
+class TestUser(unittest.TestCase):
+
+    def test_borrow_book(self):
+        user = User("Alice", "U12345")
+        book = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        user.borrow_book(book)
+        self.assertIn(book, user.borrowed_books)
+        self.assertFalse(book.available)
+
+    def test_return_book(self):
+        user = User("Alice", "U12345")
+        book = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        user.borrow_book(book)
+        user.return_book(book)
+        self.assertNotIn(book, user.borrowed_books)
+        self.assertTrue(book.available)
+
+    def test_view_borrowed_books(self):
+        user = User("Kevin Adler", "U54321")
+        book1 = Book("Pride & Prejudice", "Jane Austen", "9780141439518")
+        book2 = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        user.borrow_book(book1)
+        user.borrow_book(book2)
+        self.assertEqual(len(user.borrowed_books), 2)
+
+
+class TestLibrary(unittest.TestCase):
+
+    def test_add_book(self):
+        library = Library()
+        book = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        library.add_book(book)
+        self.assertIn(book, library.books)
+
+    def test_remove_book(self):
+        library = Library()
+        book = Book("Fahrenheit 451", "Ray Bradbury", "9781451673319")
+        library.add_book(book)
+        library.remove_book("9781451673319")
+        self.assertNotIn(book, library.books)
+
+    def test_add_user(self):
+        library = Library()
+        user = User("Kevin Adler", "U54321")
+        library.add_user(user)
+        self.assertIn(user, library.users)
+
+    def test_remove_user(self):
+        library = Library()
+        user = User("Kevin Adler", "U54321")
+        library.add_user(user)
+        library.remove_user("U54321")
+        self.assertNotIn(user, library.users)
+
+
+# Run the tests
+if __name__ == '__main__':
+    unittest.main()
