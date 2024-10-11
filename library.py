@@ -198,15 +198,15 @@ class TestLibrary(unittest.TestCase):
 
     def test_add_book(self):
         library = Library()
-        book = Book("1984", "George Orwell", "978-0451524935")
+        book = Book("Pride & Prejudice", "Jane Austen", "978-0486284736")
         library.add_book(book)
         self.assertIn(book, library.books)
 
     def test_remove_book(self):
         library = Library()
-        book = Book("1984", "George Orwell", "978-0451524935")
+        book = Book("Pride & Prejudice", "Jane Austen", "978-0486284736")
         library.add_book(book)
-        library.remove_book("978-0451524935")
+        library.remove_book("978-0486284736")
         self.assertNotIn(book, library.books)
 
     def test_add_user(self):
